@@ -1,10 +1,10 @@
-# LearnSpring  
+## LearnSpring  
 
 spring功能的底层依赖于两个核心特性：  
 - 依赖注入：(dependency injection,DI)  
 - 面向切面编程：(aspect-oriented programming,AOP)  
 
-## 简化Java开发  
+### 简化Java开发  
 
 spring旨在简化开发，采用了以下4个策略：  
 - 基于POJO的轻量级以及**最小侵入**式编程。  
@@ -31,7 +31,7 @@ POJO:
 声明式编程：  
 >声明式编程（英语：Declarative programming）是一种编程范式，与命令式编程相对立。它描述目标的性质，让计算机明白目标，而非流程。  
 
-### 激发POJO的潜能  
+#### 激发POJO的潜能  
 
 很多框架通过强迫应用继承它们的类或实现它们的接口从而导致应用与框架绑死。    
 Spring竭力避免因自身的API而弄乱你的应用代码：  
@@ -42,7 +42,7 @@ Spring不会强迫你实现Spring规范的接口或继承Spring规范的类。
 Spring的非侵入编程模型意味着一个普通类在Spring应用和非Spring应用中都可以**发挥同样的作用**。  
 Spring赋予POJO魔力的**方式之一**就是通过**DI来装配**它们。  
 
-### 依赖注入  
+#### 依赖注入  
 
 传统的做法，每个对象负责管理与自己相互协作的对象：这将会导致**高度耦合**和**难以测试**的代码。  
 通过DI，对象的依赖关系将由系统中负责协调各对象的**第三方组件**在创建对象的时候**进行设定**：对象无需自行创建或管理它们的依赖关系。
@@ -62,7 +62,7 @@ Spring赋予POJO魔力的**方式之一**就是通过**DI来装配**它们。
 - Spring自带了多种应用上下文的实现，它们之间主要的**区别**仅仅在于如何**加载配置**。  
 - `ClassPathXmlApplicationContext`: 加载位于应用程序类路径下一个或多个**XML配置文件**。
 
-### 应用切面  
+#### 应用切面  
 
 DI能够让相互协作的软件组件保持松散耦合，
 而面向切面编程(aspect-oriented programming，AOP)允许你把**遍布应用各处**的功能**分离出来**形成可重用的组件。
@@ -114,7 +114,7 @@ AOP**确保POJO的简单性**:
 >能够为其他Spring bean做到的事情都可以同样应用到Spring切面中，例如为它们注入依
 赖。
 
-### 使用模板消除样板代码  
+#### 使用模板消除样板代码  
 
 样板式代码：  
 - 为了实现**通用和简单**的任务，常常不得一遍编地重复编写这些代码。  
@@ -194,7 +194,7 @@ public class Employee{
 }
 ```
 
-## 容纳你的Bean
+### 容纳你的Bean
 
 spring容器：基于spring的应用，你的应用对象都是生存于spring容器。  
 - spring容器负责创建对象，装配它们，配置并管理它们的整个生命周期。  
@@ -207,7 +207,7 @@ spring容器：基于spring的应用，你的应用对象都是生存于spring�
 - 应用上下文(`org.springframework.context.ApplicationContext`)：基于`beanFactroy`构建，提供应用框架级的服务。  
 >从属性文件解析文本信息以及发布应用事件给感兴趣的事件监听者。 
 
-### 应用上下文  
+#### 应用上下文  
 应用上下文：  
 - `AnnotationConfigApplicationContext`：从一个或多个**Java配置类**中加载Spring应用上下文。 
 - `AnnotationConfigWebApplicationContext`：从一个或多个**Java配置类**中加载Spring **Web应用**上下文。  
@@ -218,7 +218,7 @@ spring容器：基于spring的应用，你的应用对象都是生存于spring�
 获取bean： 
 - 应用上下文准备就绪后就可以调用`getbean(Class cl)`从容器中获取bean。  
 
-### bean的生命周期  
+#### bean的生命周期  
 
 bean的生命周期：
 - 传统的Java应用中，bean的生命周期很简单：实例化->使用->不使用->自动垃圾回收。  
@@ -241,12 +241,12 @@ bean的生命周期各个阶段：
 10．如果bean实现了`DisposableBean`接口，Spring将调用它的`destroy()`接口方法。  
     >同样，如果bean使用`destroy-method`声明了销毁方法，该方法也会被调用。  
  
- ## 俯瞰Spring风景线  
+ ### 俯瞰Spring风景线  
  
  在Spring框架的范畴内，你会发现Spring简化Java开发的多种方式。  
  但在Spring框架之外还存在一个构建在核心框架之上的庞大生态圈，  它将Spring扩展到不同的领域，例如Web服务、REST、移动开发以及NoSQL。  
  
- ### Spring模块
+ #### Spring模块
  
  在Spring 4.0中，Spring框架的发布版本包括了20个不同的模块，每个模块会有3个JAR文件（二进制类库、源码的JAR文件以及
  JavaDoc的JAR文件）。  
