@@ -1,10 +1,10 @@
-# LearnSpring  
+## LearnSpring  
 
 spring功能的底层依赖于两个核心特性：  
 - 依赖注入：(dependency injection,DI)  
 - 面向切面编程：(aspect-oriented programming,AOP)  
 
-## 简化Java开发  
+### 简化Java开发  
 
 spring旨在简化开发，采用了以下4个策略：  
 - 基于POJO的轻量级以及**最小侵入**式编程。  
@@ -31,7 +31,7 @@ POJO:
 声明式编程：  
 >声明式编程（英语：Declarative programming）是一种编程范式，与命令式编程相对立。它描述目标的性质，让计算机明白目标，而非流程。  
 
-### 激发POJO的潜能  
+#### 激发POJO的潜能  
 
 很多框架通过强迫应用继承它们的类或实现它们的接口从而导致应用与框架绑死。    
 Spring竭力避免因自身的API而弄乱你的应用代码：  
@@ -42,9 +42,9 @@ Spring不会强迫你实现Spring规范的接口或继承Spring规范的类。
 Spring的非侵入编程模型意味着一个普通类在Spring应用和非Spring应用中都可以**发挥同样的作用**。  
 Spring赋予POJO魔力的**方式之一**就是通过**DI来装配**它们。  
 
-### 依赖注入  
+#### 依赖注入  
 
-传统的做法，每个对象负责管理与自己相互协作的对象：这将会导致**高度耦合**和**难以测试**的代码。
+传统的做法，每个对象负责管理与自己相互协作的对象：这将会导致**高度耦合**和**难以测试**的代码。  
 通过DI，对象的依赖关系将由系统中负责协调各对象的**第三方组件**在创建对象的时候**进行设定**：对象无需自行创建或管理它们的依赖关系。
 
 依赖注入：构造器注入
@@ -55,16 +55,14 @@ Spring赋予POJO魔力的**方式之一**就是通过**DI来装配**它们。
 - 创建应用组件之间协作的行为通常称为装配（wiring）。  
 - Spring有多种装配bean的方式：  
     - 采用XML是很常见的一种装配方式，如knight.xml。
-    - 基于Java的配置，如KinghtConfig类。  
+    - 基于Java的配置，如KnightConfig类。  
     
 应用上下文：
-- Spring通过**应用上下文(Application Context)**装载bean的定义并把它们组装起来。  
-- Spring应用上下文**全权负责**对象的**创建和组装**。  
-- Spring自带了多种应用上下文的实现，它们之间主要的**区别**仅仅在于如何**加
-  载配置**。  
+- Spring通过 **应用上下文(Application Context)** 装载bean的定义并把它们组装起来。Spring应用上下文**全权负责**对象的**创建和组装**。  
+- Spring自带了多种应用上下文的实现，它们之间主要的**区别**仅仅在于如何**加载配置**。  
 - `ClassPathXmlApplicationContext`: 加载位于应用程序类路径下一个或多个**XML配置文件**。
 
-### 应用切面  
+#### 应用切面  
 
 DI能够让相互协作的软件组件保持松散耦合，
 而面向切面编程(aspect-oriented programming，AOP)允许你把**遍布应用各处**的功能**分离出来**形成可重用的组件。
@@ -86,7 +84,7 @@ DI能够让相互协作的软件组件保持松散耦合，
 
 ![横切关注点](横切关注点.png)
 
-AOP:
+AOP**确保POJO的简单性**:
 - AOP能够使这些**服务模块化**，并以**声明的方式**将它们应用到它们需要影响的组件中去。  
 - 所造成的结果就是这些组件会具有**更高的内聚性**并且会**更加关注自身的业务**，完全不需要了解涉及系统服务所带来复杂性。  
 - 总之，AOP能够**确保POJO的简单性**。  
@@ -116,7 +114,7 @@ AOP:
 >能够为其他Spring bean做到的事情都可以同样应用到Spring切面中，例如为它们注入依
 赖。
 
-### 使用模板消除样板代码  
+#### 使用模板消除样板代码  
 
 样板式代码：  
 - 为了实现**通用和简单**的任务，常常不得一遍编地重复编写这些代码。  
@@ -137,6 +135,7 @@ public class Employee{
             //查找员工
             stmt = conn.prepareStatement("select id, firstname, lastname, salary from employee where id=?");
             stmt.setLong(1, id);
+            rs = stmt.executeQuery();
             Employee employee = null;
             //根据数据创建对象
             if(rs.next()){
@@ -148,22 +147,29 @@ public class Employee{
             }
             return employee;
         }catch(SQLEXCeption e){
+            e.printStackTrace();
         }finally{
             //清理
             if(rs!=null){
                 try{
                     rs.close();
-                }catch(SQLException e){}
+                }catch(SQLException e){ 
+                    e.printStackTrace();
+                }
             }
             if(stmt != null){
                 try{
                     stmt.close();
-                }catch(SQLException e){}
+                }catch(SQLException e){
+                    e.printStackTrace();
+                }
             }
             if(conn != null){
                 try{
                     conn.close();
-                }catch(SQLException e){}
+                }catch(SQLException e){
+                    e.printStackTrace();
+                }
             }
         }
     }
@@ -188,10 +194,9 @@ public class Employee{
 }
 ```
 
-## 容纳你的Bean
+### 容纳你的Bean
 
-spring容器：
-- 基于spring的应用，你的应用对象都是生存于spring容器。  
+spring容器：基于spring的应用，你的应用对象都是生存于spring容器。  
 - spring容器负责创建对象，装配它们，配置并管理它们的整个生命周期。  
 - 容器是spring框架的核心。
 - 容器使用DI管理构成应用的组件，它会创建互相协作组件之间的关联。  
@@ -202,9 +207,66 @@ spring容器：
 - 应用上下文(`org.springframework.context.ApplicationContext`)：基于`beanFactroy`构建，提供应用框架级的服务。  
 >从属性文件解析文本信息以及发布应用事件给感兴趣的事件监听者。 
 
+#### 应用上下文  
 应用上下文：  
 - `AnnotationConfigApplicationContext`：从一个或多个**Java配置类**中加载Spring应用上下文。 
 - `AnnotationConfigWebApplicationContext`：从一个或多个**Java配置类**中加载Spring **Web应用**上下文。  
 - `ClassPathXmlApplicationContext`：从所有**类路径**(包括jar文件)中加载一个或多个**XML配置文件**中加载上下文定义，把应用上下文的定义文件作为资源。  
 - `FileSystemXmlApplicationContext`：从**文件系统**下的一个或多个**XML配置**文件中加载上下文定义。  
 - `XmlWebApplicationContext`：从**Web应用**下的一个或多个**XML配置文件**中加载上下文定义。  
+
+获取bean： 
+- 应用上下文准备就绪后就可以调用`getbean(Class cl)`从容器中获取bean。  
+
+#### bean的生命周期  
+
+bean的生命周期：
+- 传统的Java应用中，bean的生命周期很简单：实例化->使用->不使用->自动垃圾回收。  
+- Spring容器中的bean的生命周期就显得**相对复杂**多了。  
+- 正确理解Spring bean的生命周期非常重要，因为你或许要利用Spring提供的**扩展点来自定义bean的创建过程**。  
+
+![bean的生命周期](bean的生命周期.png)  
+
+bean的生命周期各个阶段：
+1．Spring对bean进行**实例化**。  
+2．Spring将**值和bean的引用**注入到bean对应的**属性**中。  
+3．如果bean实现了`BeanNameAware`接口，Spring将bean的`ID`传递给`setBeanName()`方法。  
+4．如果bean实现了`BeanFactoryAware`接口，Spring将调用`setBeanFactory()`方法，将`BeanFactory`容器实例传入。  
+5．如果bean实现了`ApplicationContextAware`接口，Spring将调用`setApplicationContext()`方法，将bean所在的**应用上下文的引用**传入进来。  
+6．如果bean实现了`BeanPostProcessor`接口，Spring将调用它们的`postProcessBeforeInitialization()`方法。  
+7．如果bean实现了`InitializingBean`接口，Spring将调用它们的`afterPropertiesSet()`方法。 
+    >类似地，如果bean使用`initmethod`声明了初始化方法，该方法也会被调用。  
+8．如果bean实现了`BeanPostProcessor`接口，Spring将调用它们的`postProcessAfterInitialization()`方法。  
+9．此时，bean已经准备就绪，可以被应用程序使用了，它们将一直驻留在应用上下文中，直到该应用上下文被销毁。  
+10．如果bean实现了`DisposableBean`接口，Spring将调用它的`destroy()`接口方法。  
+    >同样，如果bean使用`destroy-method`声明了销毁方法，该方法也会被调用。  
+ 
+ ### 俯瞰Spring风景线  
+ 
+ 在Spring框架的范畴内，你会发现Spring简化Java开发的多种方式。  
+ 但在Spring框架之外还存在一个构建在核心框架之上的庞大生态圈，  它将Spring扩展到不同的领域，例如Web服务、REST、移动开发以及NoSQL。  
+ 
+ #### Spring模块
+ 
+ 在Spring 4.0中，Spring框架的发布版本包括了20个不同的模块，每个模块会有3个JAR文件（二进制类库、源码的JAR文件以及
+ JavaDoc的JAR文件）。  
+ 完整的库JAR文件如图所示：  
+ ![Spring模块](Spring模块.png)  
+ 
+ 这些模块依据其所属的功能可以划分为6类不同的功能，如图所示：  
+ ![Spring功能](Spring功能.png)  
+ 
+ - Spring核心容器:  容器是Spring框架最核心的部分，它管理着Spring应用中bean的创建、配置和管理。  
+ - Spring的AOP模块: AOP可以帮助应用对象解耦。  
+ - 数据访问与集成： Spring的JDBC和DAO（Data Access Object）模块抽象了这些样板式代码，使我们的数据库代码变得简单明了。
+ - Web与远程调用： MVC（Model-View-Controller）模式是一种普遍被接受的构建Web应用的方法，它可以帮助用户将界面逻辑与应用逻辑分离。  
+ - Instrumentation： Spring的Instrumentation模块提供了为JVM添加代理（agent）的功能。  
+    >具体来讲，它为Tomcat提供了一个织入代理，能够为Tomcat传递类文件，就像这些文件是被类加载器加载的一样。  
+ - 测试：鉴于开发者自测的重要性，Spring提供了测试模块以致力于Spring应用的测试。  
+
+### Spring Portfolio  
+整个Spring Portfolio包括多个构建于核心Spring框架之上的框架和类库。  
+概括地讲，整个Spring Portfolio几乎为每一个领域的Java开发都提供了Spring编程模型。  
+
+
+                                                                        

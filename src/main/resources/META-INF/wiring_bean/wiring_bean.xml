@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/util
+        http://www.springframework.org/schema/util/spring-util.xsd
+        ">
+
+    <context:component-scan base-package="pers.mortal.learn.spring.wiringbean"/>
+
+     <bean id="compactDisc" class="pers.mortal.learn.spring.wiringbean.xmlconfig.SgtPeppers"/>
+
+    <!--借助构造器注入, 强依赖使用构造器注入-->
+    <bean id="cdPlayer" class="pers.mortal.learn.spring.wiringbean.xmlconfig.CDPlayer">
+        <constructor-arg ref="compactDisc"/>
+    </bean>
+    <!--C 命名空间-->
+    <!--添加 xmlns:c="http://www.springframework.org/schema/c"-->
+<!--    <bean id="cdPlayer" class="pers.mortal.learn.spring.wiringbean.xmlconfig.CDPlayer"-->
+<!--        c:cd-ref="compactDisc"/>&lt;!&ndash;使用参数名&ndash;&gt;-->
+<!--    <bean id="cdPlayer" class="pers.mortal.learn.spring.wiringbean.xmlconfig.CDPlayer"-->
+<!--          c:_0-ref="compactDisc"/>&lt;!&ndash;使用参数索引, "_"+<索引>+"-ref"&ndash;&gt;-->
+<!--    <bean id="cdPlayer" class="pers.mortal.learn.spring.wiringbean.xmlconfig.CDPlayer"-->
+<!--          c:_-ref="compactDisc"/>&lt;!&ndash;如果只有一个参数，就可以不用标识参数&ndash;&gt;-->
+
+    <!--装配字面量值-->
+<!--    <bean id="compactDisc" class="pers.mortal.learn.spring.wiringbean.xmlconfig.BlankDisc">-->
+<!--        <constructor-arg value="Sgt. Pepper's Lonely Hearts Club Band"/>-->
+<!--        <constructor-arg value="The Beatles"/>-->
+<!--        <constructor-arg ><null/></constructor-arg>-->
+<!--    </bean>-->
+    <!-- C命名空间则去掉 “-ref” 即装配字面量值-->
+<!--    <bean id="compactDisc" class="pers.mortal.learn.spring.wiringbean.xmlconfig.BlankDisc"-->
+<!--          c:_title="Sgt. Pepper's Lonely Hearts Club Band"-->
+<!--            c:_artist="The Beatles"/>-->
+<!--    <bean id="compactDisc" class="pers.mortal.learn.spring.wiringbean.xmlconfig.BlankDisc"-->
+<!--          c:_0="Sgt. Pepper's Lonely Hearts Club Band"-->
+<!--          c:_0="The Beatles"/>-->
+
+    <!--装配集合-->
+    <bean id="compactDisc2" class="pers.mortal.learn.spring.wiringbean.xmlconfig.BlankDisc">
+        <constructor-arg value="Sgt. Pepper's Lonely Hearts Club Band"/>
+        <constructor-arg value="The Beatles"/>
+        <constructor-arg >
+            <list>
+                <!--value子元素装配字面量值为集合元素-->
+                <value>Sgt. Pepper's Lonely Hearts Club Band</value>
+                <value>With a Little Help from My Friends</value>
+                <value>Lucy in the Sky with Diamonds</value>
+                <value>Getting Better</value>
+                <value>Fixing a Hole</value>
+            </list>
+        </constructor-arg>
+    </bean>
+<!--    <bean id="compactDisc" class="pers.mortal.learn.spring.wiringbean.xmlconfig.BlankDisc">-->
+<!--        <constructor-arg value="Sgt. Pepper's Lonely Hearts Club Band"/>-->
+<!--        <constructor-arg value="The Beatles"/>-->
+<!--        <constructor-arg >-->
+<!--            &lt;!&ndash;类似地， 也可以装配set集合&ndash;&gt;-->
+<!--            <set>-->
+<!--                &lt;!&ndash;类似得 ref子元素装配字面量值为集合元素&ndash;&gt;-->
+<!--                <ref bean="sgtPeppers"/>-->
+<!--                <ref bean="whiteAlbum"/>-->
+<!--                <ref bean="hardDayNight"/>-->
+<!--                <ref bean="revolver"/>-->
+<!--            </set>-->
+<!--        </constructor-arg>-->
+<!--    </bean>-->
+
+    <!--借助Setter方法属性注入， 弱依赖使用属性注入-->
+<!--    <bean id="cdPlayer" class="pers.mortal.learn.spring.wiringbean.xmlconfig.CDPlayer">-->
+<!--       <property name="cd" ref="compactDisc"/>-->
+<!--    </bean>-->
+    <!--P命名空间， 属性注入的替代方法，用法与C命名空间类似-->
+    <!--添加 xmlns:p="http://www.springframework.org/schema/p"-->
+    <!--装配集合<property>与<constructor-arg>类似可以装配集合，需添加name属性指定集合属性名 -->
+
+    <!--Spring util-->
+    <!--添加 xmlns:util="http://www.springframework.org/schema/util"-->
+    <util:list id="trackList">
+        <value>Sgt. Pepper's Lonely Hearts Club Band</value>
+        <value>With a Little Help from My Friends</value>
+        <value>Lucy in the Sky with Diamonds</value>
+        <value>Getting Better</value>
+        <value>Fixing a Hole</value>
+    </util:list>
+</beans>
