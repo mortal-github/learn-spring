@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/aop
+        ttp://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        "
+>
+<!--    profile="dev"> <beans>的profile属性定义 xml文件的所属的profile-->
+
+    <context:property-placeholder/>
+
+    <bean id="prototypeScope" class="pers.mortal.learn.spring.advancewiring.scope.PrototypeScope"
+        scope="prototype"/>
+    <bean id="sessionScope" class="pers.mortal.learn.spring.advancewiring.scope.SessionScope"
+        scope="session">
+        <!--基于接口的代理-->
+        <aop:scoped-proxy proxy-target-class="false"/>
+    </bean>
+    <bean id="requestScope" class="pers.mortal.learn.spring.advancewiring.scope.RequestScope"
+          scope="request">
+        <aop:scoped-proxy /> <!--基于类的代理, 默认proxy-target-class="true"-->
+    </bean>
+
+    <bean id="ambiguityXML" class="pers.mortal.learn.spring.advancewiring.wiringambiguity.primary.AmbiguityXML"
+    primary="false"/>
+
+    <bean id="allClass" class="pers.mortal.learn.spring.advancewiring.profile.AllClass"/>
+
+    <!--或者使用嵌套的<beans> 这样就能将集中配置。-->
+    <!--需在被嵌套的beans子元素之后，即不能在<bean>之前嵌套<beans>-->
+    <beans profile="dev">
+       <bean id="devClass" class="pers.mortal.learn.spring.advancewiring.profile.DevClass"/>
+    </beans>
+
+    <beans profile="prod">
+        <bean id="ProdClass" class="pers.mortal.learn.spring.advancewiring.profile.ProdClass"/>
+    </beans>
+</beans>

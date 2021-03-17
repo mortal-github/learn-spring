@@ -99,7 +99,7 @@ class DataSourceConfig{
 - 在集成测试类上，使用**`@ActiveProfiles`**注解设置。  
 
 ### 条件化装配`@Conditional`  
-- **`@Conditional`**注解： Spring4引入了`@Conditional`注解，与`Bean`注解配置，条件化创建Bean。  
+- **`@Conditional`**注解： Spring4引入了`@Conditional`注解，与`Bean`或`Component`注解配合，条件化创建Bean。  
 - **`Condition`**接口： `@Conditional`注解通过**`Condition`**参数的**`matches`**方法判断是否创建Bean。  
 ```java
 @Configuration 
@@ -122,7 +122,7 @@ class MagicExistsCondition implements Condition{
 `Condition`接口：  
 ```java
 public interface Condition{
-    public boolean matches(ConditionContext context, AnnotatedTypeMetadata metadata);
+    boolean matches(ConditionContext context, AnnotatedTypeMetadata metadata);
 }
 ```
 
@@ -158,7 +158,7 @@ Spring4的`@Profile`重构为使用了`@Conditional`,`Condition`：
 public @interface Profile{
     String[] value();
 }
-class ProfileConditon implements Condition{
+class ProfileCondition implements Condition{
     public boolean matches(ConditionContext context, AnnotatedTypeMetadata metadata){
            if(context.getEnvironment() != null){
                MultiValueMap<String, Object> attrs = 
@@ -218,14 +218,14 @@ public class Example{
 ```java
 public class ExampleAutowired{
     @Autowired 
-    @Qualifier("iecCream")
+    @Qualifier("ircCream")
     public void setDessert(Dessert dessert){
     }
 }
 ```
 ```java
 @Component 
-@Qualifier("cole")
+@Qualifier("cold")
 public class ExampleComponent{
 
 }
@@ -243,14 +243,14 @@ public class ExampleBean{
 //用来组合的限定符注解1
 @Target({ElementType.CONSTRUCTOR, ElementType.FIELD, ElementType.METHOD, ElementType.TYPE})
 @Rentention(RententionPolicy.RUNTIME)
-@Qalifier
+@Qualifier
 public @interface Cold{}
 ```
 ```java
 //用来组合的限定符注解2
 @Target({ElementType.CONSTRUCTOR, ElementType.FIELD, ElementType.METHOD, ElementType.TYPE})
 @Rentention(RententionPolicy.RUNTIME)
-@Qalifier
+@Qualifier
 public @interface Creamy{}
 ```
 ```java
@@ -324,7 +324,7 @@ public interface ShoppingCart{}
 @Component 
 public class StoreService{
     @Autowired
-    public void setShoppingCart(ShoopingCart shopingCart){}
+    public void setShoppingCart(ShoopingCart shoppingCart){}
 }
 ```
 >因为StoreService是一个单例的bean，会在Spring应用上下文加载 的时候创建。  
@@ -433,7 +433,7 @@ public class BlankDisc{
 @Configuration
 public class ExampleConfig{
     @Bean 
-    public static PropertySourcesPlaceholderConfigurer placeholderConfigurer(){
+    public static PropertySourcesPlaceholderConfigurer getPlaceholderConfigurer(){
         return new PropertySourcesPlaceholderConfigurer();
     }
 }
