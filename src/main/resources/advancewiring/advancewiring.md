@@ -367,7 +367,7 @@ Spring提供了两种在运行时求值的方式：
 - Spring表达式语言（SpEL）。  
 
 #### 注入外部的值  
-使用**`@PropertySource`**注解和**`Environment**`：处理外部值的最简单方式就是**声明属性源**并通过`Environment`来**检索属性**。  
+使用**`@PropertySource`**注解和**`Environment`**：处理外部值的最简单方式就是**声明属性源**并通过`Environment`来**检索属性**。  
 >@PropertySource中指定的文件的属性将会被加载到Environment中。  
 >接下来就可以使用Environment获取属性。   
 ```java
