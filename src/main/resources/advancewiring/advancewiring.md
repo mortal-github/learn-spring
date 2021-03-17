@@ -426,9 +426,10 @@ public class BlankDisc{
 ```
 
 **启用占位符**：  
+>实践发现似乎不需要特意启动使用占位符。  
 - java配置： 为了使用占位符，我们必须要配置一个**`PropertyPlaceholderConfigurer`**bean 或`PropertySourcesPlaceholderConfigurer`bean。
         从Spring 3.1开始，推荐使 用`PropertySourcesPlaceholderConfigurer`，因为它能够基 于`Spring Environment`及其属性源来解析占位符
-- XML配置: **Spring context命名空间**中的**`<context:propertyplaceholder>`**元素将会为你生成`PropertySourcesPlaceholderConfigurer`bean：
+- XML配置: **Spring context命名空间**中的**`<context:property-placeholder>`**元素将会为你生成`PropertySourcesPlaceholderConfigurer`bean：
 ```java
 @Configuration
 public class ExampleConfig{
