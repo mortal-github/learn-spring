@@ -4,7 +4,6 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-
 public class CDPlayerTest {
     private static ClassPathXmlApplicationContext context;
     private static CompactDisc cd;

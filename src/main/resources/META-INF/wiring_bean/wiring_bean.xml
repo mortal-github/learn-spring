@@ -12,7 +12,7 @@
         http://www.springframework.org/schema/util/spring-util.xsd
         ">
 
-    <context:component-scan base-package="pers.mortal.learn.spring.wiringbean"/>
+    <context:component-scan base-package="pers.mortal.learn.spring.wiringbean.auto"/>
 
      <bean id="compactDisc" class="pers.mortal.learn.spring.wiringbean.xmlconfig.SgtPeppers"/>
 

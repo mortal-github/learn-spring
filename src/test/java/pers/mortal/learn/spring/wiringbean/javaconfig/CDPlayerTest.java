@@ -2,20 +2,24 @@ package pers.mortal.learn.spring.wiringbean.javaconfig;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = CDPlayerConfig.class)
 public class CDPlayerTest {
-    private static AnnotationConfigApplicationContext context;
-    private static CompactDisc cd;
-    private static CDPlayer player;
+
+    @Autowired
+    private CompactDisc cd;
+
+    @Autowired
+    private CDPlayer player;
 
     @Test
     public void play(){
-        context = new AnnotationConfigApplicationContext(CDPlayerConfig.class);
-        cd = context.getBean(CompactDisc.class);
-        player = context.getBean(CDPlayer.class);
 
-        Assert.assertNotNull(context);
         Assert.assertNotNull(cd);
         Assert.assertNotNull(player);
         player.play();
