@@ -39,29 +39,18 @@ public class DatabaseConfigurationTest {
            ResultSet resultSet = statement.executeQuery();
 
           while(resultSet.next()){
-              int id = resultSet.getInt("id");
-              short column1 = resultSet.getShort("column1");
-              int column2 = resultSet.getInt("column2");
-              int column3 = resultSet.getInt("column3");
-              int column4 = resultSet.getInt("column4");
-              long column5 = resultSet.getLong("column5");
-              BigDecimal column6 = resultSet.getBigDecimal("column6");
-              BigDecimal column7 = resultSet.getBigDecimal("column7");
-              double column8 = resultSet.getDouble("column8");
-              double column9 = resultSet.getDouble("column9");
-              byte column10 = resultSet.getByte("column10");
-
-              byte[] columns = resultSet.getBytes("column10");
-
-//                  try {
-//                      while(stream.available() > 0) {
-//                          int value = stream.read();
-//                          System.out.println("");
-//                      }
-//                  } catch (IOException e) {
-//                      e.printStackTrace();
-//                  }
-
+            int id = resultSet.getInt("id");
+            short column1 = resultSet.getShort("column1");
+            int column2 = resultSet.getInt("column2");
+            int column3 = resultSet.getInt("column3");
+            int column4 = resultSet.getInt("column4");
+            long column5 = resultSet.getLong("column5");
+            BigDecimal column6 = resultSet.getBigDecimal("column6");
+            BigDecimal column7 = resultSet.getBigDecimal("column7");
+            double column8 = resultSet.getDouble("column8");
+            double column9 = resultSet.getDouble("column9");
+            byte column10 = resultSet.getByte("column10");
+            byte[] columns = resultSet.getBytes("column10");
 
             System.out.println("");
           }
