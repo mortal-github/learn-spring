@@ -35,7 +35,7 @@ public class DatabaseConfigurationTest {
     @Test
     public void testDataSource(){
        try(Connection connection = dataSource.getConnection()){
-           PreparedStatement statement = connection.prepareStatement("SELECT * FROM Number");
+           PreparedStatement statement = connection.prepareStatement("SELECT * FROM NumberType");
            ResultSet resultSet = statement.executeQuery();
 
           while(resultSet.next()){
@@ -74,10 +74,10 @@ public class DatabaseConfigurationTest {
     @Test
     public void testJdbcTemplate(){
         jdbcOperations.update("INSERT " +
-                "INTO Number(column1,column2,column3,column4,column5,column6,column7,column8,column9, column10)" +
+                "INTO NumberType(column1,column2,column3,column4,column5,column6,column7,column8,column9, column10)" +
                 "VALUES (?,?,?,?,?,?,?,?,?,?)",
                 1,2,3,4,8,15,15,32,64, 0b1001);
-        Map<String, Object> map = jdbcOperations.queryForMap("SELECT * FROM Number WHERE id = ?", 1);
+        Map<String, Object> map = jdbcOperations.queryForMap("SELECT * FROM NumberType WHERE id = ?", 1);
         for(Map.Entry<String, Object> entry : map.entrySet()){
             System.out.println(entry.getKey() + " = " + entry.getValue() + " [" + entry.getValue().getClass() + " ]");
         }
@@ -88,7 +88,7 @@ public class DatabaseConfigurationTest {
     public void testNamedParameterJdbcTemplate(){
         //使用命名参数
         final String INSERT_NUMBER = "INSERT " +
-                "INTO Number(column1,column2,column3,column4,column5,column6,column7,column8,column9, column10)" +
+                "INTO NumberType(column1,column2,column3,column4,column5,column6,column7,column8,column9, column10)" +
                 "VALUES ( :column1, :column2, :column3, :column4, :column5, :column6, :column7, :column8, :column9, :column10)";
         //绑定命名参数
         Map<String, Object> paramMap = new HashMap<>();
