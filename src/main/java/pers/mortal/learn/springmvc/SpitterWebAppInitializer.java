@@ -2,6 +2,9 @@ package pers.mortal.learn.springmvc;
 
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
+import javax.servlet.Filter;
+import javax.servlet.MultipartConfigElement;
+import javax.servlet.ServletRegistration;
 
 public class SpitterWebAppInitializer
     extends AbstractAnnotationConfigDispatcherServletInitializer {
@@ -22,5 +25,20 @@ public class SpitterWebAppInitializer
         return new Class<?>[]{WebConfig.class};
     }
 
+    @Override
+    protected void customizeRegistration(ServletRegistration.Dynamic registration){
+        //设置Multipart配置
+        registration.setMultipartConfig(
+                new MultipartConfigElement("D:/tmp", 1024 * 1024, 1024 * 1024 * 10, 1024));
+        //设置优先级
+        registration.setLoadOnStartup(-1);
+        //设置初始化参数
+        registration.setInitParameter("param", "value");
+    }
 
+    //注册Filter并映射到DispatcherServlet。
+    @Override
+    protected Filter[] getServletFilters(){
+        return new Filter[]{new LogDispatcherServletInStdoutFilter()};
+    }
 }

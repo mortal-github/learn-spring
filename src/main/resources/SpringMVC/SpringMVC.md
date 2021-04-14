@@ -108,7 +108,9 @@ package org.springframework.web.servlet.support;
 public interface WebApplicationInitializer{}
 ```
 ```java
-public abstract class AbstractAnnotationConfigDispatcherServletInitializer implements WebApplicationInitializer{
+public class AbstractContextLoaderInitializer implements WebApplicationInitializer{}
+public class AbstractDispatcherServletInitializer extends AbstractContextLoaderInitializer{}
+public abstract class AbstractAnnotationConfigDispatcherServletInitializer extends AbstractDispatcherServletInitializer{
     //Spring3.2 引入了这个实现，它会同时创建DispatcherServlet和ContextLoaderListener。 
     //因此实现其子列，部署到Servlet3.0时，容器会自动发现它，并用来配置Servlet上下文。  
 
