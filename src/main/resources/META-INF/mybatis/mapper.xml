@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pers.mortal.learn.springdata.orm.mybatis.NumberTypeMapper">
+    <select id="selectNumber" resultType="pers.mortal.learn.springdata.NumberType">
+        SELECT *
+        FROM NumberType
+        WHERE id = #{id}
+    </select>
+    <insert id="insertNumber" parameterType="pers.mortal.learn.springdata.NumberType"
+        useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        INSERT
+        INTO NumberType(column1, column2, column3, column4, column5, column6, column7, column8, column9, column10)
+        VALUES(#{column1}, #{column2}, #{column3}, #{column4}, #{column5}, #{column6}, #{column7}, #{column8}, #{column9}, #{column10})
+    </insert>
+</mapper>
