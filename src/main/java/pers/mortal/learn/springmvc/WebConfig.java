@@ -9,11 +9,12 @@ import org.springframework.web.servlet.config.annotation.DefaultServletHandlerCo
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
+import pers.mortal.learn.springdata.security.ExampleMethodSecurityController;
 import pers.mortal.learn.springmvc.multipart.ExampleMultipartConfig;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackageClasses = {WebConfig.class})
+@ComponentScan(basePackageClasses = {WebConfig.class, ExampleMethodSecurityController.class})
 @Import({ExampleMultipartConfig.class})
 public class WebConfig extends WebMvcConfigurerAdapter {
 
