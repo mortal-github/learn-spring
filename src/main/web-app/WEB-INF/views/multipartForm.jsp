@@ -11,6 +11,7 @@
         <form method="POST" enctype="multipart/form-data">
             <input type="file" name="profilePicture" accept="image/jpeg,image/png,image/gif"/><br/>
             <input type="submit" value="Register"/>
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         </form>
     </body>
 </html>
