@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:jms="http://www.springframework.org/schema/jms"
+       xmlns:amq="http://activemq.apache.org/schema/core"
+       xsi:schemaLocation=" http://www.springframework.org/schema/beans
+                            http://www.springframework.org/schema/beans/spring-beans.xsd
+                            http://www.springframework.org/schema/jms
+                            http://www.springframework.org/schema/jms/spring-jms.xsd
+                            http://activemq.apache.org/schema/core
+                            http://activemq.apache.org/schema/core/activemq-core.xsd">
+
+    <!-- 使用ActiveMQ的spring命名空间配置消息代理 -->
+    <amq:connectionFactory id="connectionFactory" brokerURL="tcp://localhost:61616"/>
+    <amq:queue id="queue" physicalName="ActiveMQ.Queue"/>
+    <amq:topic id="topic" physicalName="ActiveMQ.Topic"/>
+
+    <!-- 使用远程服务 -->
+    <bean id="MessageRPCServiceClient"
+          class = "org.springframework.jms.remoting.JmsInvokerProxyFactoryBean">
+        <!--connectionFactory和queryName属性指定了RPC消息如何被投 递-->
+        <property name="connectionFactory" ref="connectionFactory"/>
+        <property name="queueName" value="ActiveMQ.Queue"/>
+        <!--于serviceInterface，指定 了代理应该通过AlertService接口暴露功能。-->
+        <property name="serviceInterface" value="pers.mortal.learn.springintegration.message.MessageRPCService"/>
+    </bean>
+
+</beans>

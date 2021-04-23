@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:rabbit="http://www.springframework.org/schema/rabbit"
+       xsi:schemaLocation=" http://www.springframework.org/schema/beans
+                            http://www.springframework.org/schema/beans/spring-beans.xsd
+                            http://www.springframework.org/schema/rabbit
+                            http://www.springframework.org/schema/rabbit/spring-rabbit.xsd">
+
+    <!-- 声明Rabbit连接工厂-->
+    <rabbit:connection-factory id="connectionFactory"
+        host="localhost"    port="5672"
+        username="guest"    password="guest"/>
+    <!-- 声明队列 、 Exchange 与 binging-->
+    <!-- AMQP 的比 JMS 更灵活， 依赖于如何定义队列与Exchange以及如何将它们绑定在一起。 -->
+    <rabbit:admin connection-factory="connectionFactory"/>
+    <!-- 声明队列 -->
+    <rabbit:queue id="queue1" name="Rabbit.Queue.1"/>
+    <rabbit:queue id="queue2" name="Rabbit.Queue.2"/>
+    <rabbit:queue id="queue3" name="Rabbit.Queue.3"/>
+    <!-- 不使用默认的Direct Exchange， 自定义Exchange， 并绑定到队列上去-->
+    <rabbit:fanout-exchange name="fanout">
+        <rabbit:bindings>
+            <rabbit:binding queue="queue1"/>
+            <rabbit:binding queue="queue2"/>
+            <rabbit:binding queue="queue3"/>
+        </rabbit:bindings>
+    </rabbit:fanout-exchange>
+
+    <!--配置RabbitTmplate-->
+    <rabbit:template id="rabbitTemplate" connection-factory="connectionFactory"
+        exchange="fanout"
+        routing-key="Rabbit.Queue"
+        queue="Rabbit.Queue.1"/>
+
+    <!-- 配置 Message Driven POJO 异步接收消息-->
+    <bean id="MDP" class="pers.mortal.learn.springintegration.message.AMQPMessageDrivenPOJO"/>
+    <rabbit:listener-container connection-factory="connectionFactory">
+        <rabbit:listener ref="MDP" method="handleQueue" queue-names="Rabbit.Queue.1, Rabbit.Queue.2, Rabbit.Queue.3"/><!-- 接受队列名，可以接受多个队列，使用逗号分隔-->
+<!--        <rabbit:listener ref="MDP" method="handleQueue" queues="queue1, queue2, queue3"/>&lt;!&ndash; queues引用<queue>定义的队列，接收queueID列表&ndash;&gt;-->
+    </rabbit:listener-container>
+
+    <!--其他测试-->
+    <rabbit:direct-exchange name="direct">
+        <rabbit:bindings>
+            <rabbit:binding queue="queue1"/>
+            <rabbit:binding queue="queue2"/>
+            <rabbit:binding queue="queue3"/>
+        </rabbit:bindings>
+    </rabbit:direct-exchange>
+    <rabbit:listener-container connection-factory="connectionFactory">
+        <rabbit:listener ref="MDP" method="handleQueue" queues="queue1, queue2, queue3"/>
+    </rabbit:listener-container>
+</beans>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:jms="http://www.springframework.org/schema/jms"
+       xmlns:amq="http://activemq.apache.org/schema/core"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation=" http://www.springframework.org/schema/beans
+                            http://www.springframework.org/schema/beans/spring-beans.xsd
+                            http://www.springframework.org/schema/jms
+                            http://www.springframework.org/schema/jms/spring-jms.xsd
+                            http://activemq.apache.org/schema/core
+                            http://activemq.apache.org/schema/core/activemq-core.xsd
+                            http://www.springframework.org/schema/context
+                            http://www.springframework.org/schema/context/spring-context.xsd
+                            http://www.springframework.org/schema/aop
+                            http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <context:component-scan base-package="pers.mortal.learn.springintegration.message"/>
+
+    <!-- 使用ActiveMQ的spring命名空间配置消息代理 -->
+    <amq:connectionFactory id="connectionFactory" brokerURL="tcp://localhost:61616" trustAllPackages="true"/>
+    <amq:queue id="queue" physicalName="ActiveMQ.Queue"/>
+    <amq:topic id="topic" physicalName="ActiveMQ.Topic"/>
+<!--    <bean id="connectionFactory" class="org.apache.activemq.spring.ActiveMQConnectionFactory">-->
+<!--        <property name="brokerURL" value="tcp://localhost:61616"/>-->
+<!--    </bean>-->
+<!--    <bean id="queue" class="org.apache.activemq.command.ActiveMQQueue">-->
+<!--        <constructor-arg value="ActiveMQ.Queue"/>-->
+<!--    </bean>-->
+<!--    <bean id="topic" class="org.apache.activemq.command.ActiveMQTopic">-->
+<!--        <constructor-arg value="ActiveMQ.Topic"/>-->
+<!--    </bean>-->
+
+    <!-- jmsTemplate -->
+    <bean id="jmsTemplate"  class="org.springframework.jms.core.JmsTemplate">
+        <constructor-arg ref="connectionFactory"/>
+        <property name="defaultDestination" ref="queue"/>
+<!--        <property name="messageConverter" ref="mappingJackson2MessageConvert"/>-->
+    </bean>
+
+    <!-- 配置消息监听器 -->
+    <bean id="messageDrivenPOJO" class="pers.mortal.learn.springintegration.message.MessageDrivenPOJO"/>
+    <!--connection-factory属性可以移除，因为该属性的默认值就 是connectionFactory。-->
+    <!--容器中的每个 <jms:listener>都使用这个连接工厂进行消息监听。-->
+    <jms:listener-container connection-factory="connectionFactory" >
+                <!--，如果ref属性所标示的bean实现了 MessageListener，那就没有必要再指定method属性了，默认就 会调用onMessage()方法。-->
+        <jms:listener destination="ActiveMQ.Queue"
+                      ref="messageDrivenPOJO" method="handleTextQueue"/>
+    </jms:listener-container>
+    <jms:listener-container connection-factory="connectionFactory" destination-type="topic">
+        <!--，如果ref属性所标示的bean实现了 MessageListener，那就没有必要再指定method属性了，默认就 会调用onMessage()方法。-->
+        <jms:listener destination="ActiveMQ.Topic"
+                      ref="messageDrivenPOJO" method="handleTextTopic"/>
+    </jms:listener-container>
+</beans>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:jms="http://www.springframework.org/schema/jms"
+       xmlns:amq="http://activemq.apache.org/schema/core"
+       xsi:schemaLocation=" http://www.springframework.org/schema/beans
+                            http://www.springframework.org/schema/beans/spring-beans.xsd
+                            http://www.springframework.org/schema/jms
+                            http://www.springframework.org/schema/jms/spring-jms.xsd
+                            http://activemq.apache.org/schema/core
+                            http://activemq.apache.org/schema/core/activemq-core.xsd">
+
+    <!-- 使用ActiveMQ的spring命名空间配置消息代理 -->
+    <amq:connectionFactory id="connectionFactory" brokerURL="tcp://localhost:61616" trustAllPackages="true"/>
+    <amq:queue id="queue" physicalName="ActiveMQ.Queue"/>
+    <amq:topic id="topic" physicalName="ActiveMQ.Topic"/>
+
+    <!-- 使用基于消息的RPC -->
+    <!-- 远程服务实现 -->
+    <bean id="MessageRPCService" class="pers.mortal.learn.springintegration.message.MessageRPCServiceImpl"/>
+    <!-- 远程服务导出器 -->
+    <bean id="MessageRPCServiceExporter"
+          class = "org.springframework.jms.remoting.JmsInvokerServiceExporter">
+        <!--远程服务的实现-->
+        <property name="service" ref="MessageRPCService"/>
+        <!-- 远程服务的接口 -->
+        <property name="serviceInterface"
+                  value="pers.mortal.learn.springintegration.message.MessageRPCService"/>
+    </bean>
+    <!-- 消息监听器监听远程调用 -->
+    <!--导出器的属性并没有描述服务如何基于JMS通信的细节。-->
+    <!--但好消息 是JmsInvokerServiceExporter可以充当JMS监听器。-->
+    <!--因此，我 们使用<jms:listenercontainer>元素配置-->
+    <jms:listener-container connection-factory="connectionFactory">
+        <jms:listener destination="ActiveMQ.Queue" ref="MessageRPCServiceExporter"/>
+    </jms:listener-container>
+
+</beans>
