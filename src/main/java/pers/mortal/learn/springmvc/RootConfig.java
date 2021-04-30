@@ -7,7 +7,9 @@ import org.springframework.context.annotation.FilterType;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import pers.mortal.learn.springdata.security.ExampleMethodSecurityConfig;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @Configuration
 @ComponentScan(basePackageClasses = {RootConfig.class, ExampleMethodSecurityConfig.class},

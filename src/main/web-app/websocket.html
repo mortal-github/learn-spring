@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>WebSocket</title>
+        <meta charset="UTF-8"/>
+    </head>
+    <body>
+    <script src="https://cdn.bootcdn.net/ajax/libs/sockjs-client/1.5.1/sockjs.js"></script>
+    <script>
+<!--            var url = "ws://" + window.location.host + "/learn-springMVC/websocket";-->
+<!--            var sock = new WebSocket(url);-->
+
+            var url = "http://" + window.location.host + "/learn-springMVC/websocket";
+            var sock = new SockJS(url);
+
+            sock.onopen = function(){
+                console.log('Opening');
+                sayMarco();
+            };
+
+            sock.onmessage = function(e){
+                console.log('Received message: ', e.data);
+                setTimeout(function(){sayMarco()}, 2000);
+            };
+
+            sock.onclose = function(){
+                console.log('Closing');
+            };
+
+            function sayMarco(){
+                console.log('Sending Marco!');
+                sock.send("Marco!");
+            };
+        </script>
+    </body>
+</html>
