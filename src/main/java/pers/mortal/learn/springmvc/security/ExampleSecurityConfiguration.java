@@ -60,8 +60,8 @@ public class ExampleSecurityConfiguration extends WebSecurityConfigurerAdapter {
                     .requiresChannel()
                         .antMatchers("/home")
                             .requiresSecure()
-//              .and().csrf()
-//                .disable()
+              .and().csrf()
+                .disable()
                     ;
     }
 
